@@ -1,7 +1,7 @@
 # BADGE STORY - PHASE 1 + PHASE 2: press any button -> loading -> three apps
-# LinkedIn app: intro animation -> small logo + name -> (A or B) QR code slide -> C back to menu
-# GitHub app: logo intro -> SACHIN / DATA ANALYST card -> (A or B) QR code slide -> C back to menu
-# Universe 26 remains a placeholder
+# LinkedIn app: intro animation -> small logo + name -> C back to menu
+# GitHub app: logo intro -> SACHIN / DATA ANALYST card -> C back to menu
+# Universe 26 opens the animated congratulations screen
 
 import math
 import os
@@ -21,9 +21,6 @@ TICKS_PER_SECOND = 1000
 # True = five tiny squares at the top-left light up when the badge sees a button
 # press. Order: A, B, C, UP, DOWN. Use this if the buttons seem to do nothing.
 DEBUG = False
-
-# True = a small hint line appears at the bottom of the LinkedIn name screen
-SHOW_HINT = False
 
 # ---------- colours (red, green, blue: each 0 to 255) ----------
 SPACE_BG = (9, 12, 30)        # dark space background
@@ -165,108 +162,6 @@ IN32_RECTS = [
   (21, 16, 5, 11),                                             # right stem of the "n"
 ]
 IN32_BLOCKS = [shape.rectangle(r[0], r[1], r[2], r[3]) for r in IN32_RECTS]
-
-# ---------- your LinkedIn QR code (29 x 29 squares, # = black) ----------
-QR_ROWS = [
-  "#######..####.##.#.##.#######",
-  "#.....#.#.#...#..###..#.....#",
-  "#.###.#....#.#.#..##..#.###.#",
-  "#.###.#.##.#.##..##...#.###.#",
-  "#.###.#.###..###..##..#.###.#",
-  "#.....#...###.##....#.#.....#",
-  "#######.#.#.#.#.#.#.#.#######",
-  "........#......#.####........",
-  ".#.####.##.##..##..#.##.##.#.",
-  "###.....####.#.####..#..#.##.",
-  "##.#..#....###..#..####.#....",
-  "#.##.#.#.###.##..####...#...#",
-  "#..#.#####.#..##.....##....#.",
-  "#.##....#..#.##...#...#.#.###",
-  "..##.##...#.#..#..##..##.#.##",
-  "##.###.##.##.##.....#.#.####.",
-  "#...###.####...#.###.#.#.#...",
-  "#..##..#....#.........#.##...",
-  "##.#.####.##..#.##.#....###.#",
-  "##.....####..####.#####.#.###",
-  "###.#.#..###.#..##.########.#",
-  "........#.######.##.#...####.",
-  "#######.....#####..##.#.#.##.",
-  "#.....#.#.#...##..###...##..#",
-  "#.###.#.##..#.#..#.######...#",
-  "#.###.#.#.....#...#....#.###.",
-  "#.###.#..#....##..#.##.######",
-  "#.....#.###...#.#...##..###.#",
-  "#######...######..##.####....",
-]
-QR_PX = 3                      # every square is 3 x 3 pixels (the QR is 87 pixels wide)
-QR_X = 37                      # left edge on the screen
-QR_Y = 16                      # top edge on the screen
-QR_BLOCKS = []
-for y in range(29):
-  row = pad(QR_ROWS[y], 29)
-  x = 0
-  while x < 29:
-    if row[x] == "#":
-      x2 = x
-      while x2 < 29 and row[x2] == "#":
-        x2 += 1
-      QR_BLOCKS.append(shape.rectangle(QR_X + x * QR_PX, QR_Y + y * QR_PX,
-                                       (x2 - x) * QR_PX, QR_PX))
-      x = x2
-    else:
-      x += 1
-
-
-# ---------- your GitHub profile QR code (33 x 33 squares, # = black) ----------
-GITHUB_QR_ROWS = [
-  "#######...#...####.##.#######",
-  "#.....#.#.##.....###..#.....#",
-  "#.###.#..#...###..##..#.###.#",
-  "#.###.#.#..#####.##...#.###.#",
-  "#.###.#.#..##..#..##..#.###.#",
-  "#.....#..###..###...#.#.....#",
-  "#######.#.#.#.#.#.#.#.#######",
-  "........#.#...#..####........",
-  ".#.####.#####.###..#.##.##.#.",
-  ".#.###.#.##....#.##..#..#.##.",
-  "..#.#.#..##.#...#..####.#.#..",
-  "#..#.#...#.#..#..####...#...#",
-  "#.##.##.##....#......##....#.",
-  "#..#...###.####.#.#...#.#.###",
-  "....#####.###.###.##..##.#.##",
-  "#..###...#....###...###.####.",
-  "###..##...#..#.#.###.#.#.#...",
-  "#...##.##.#..#........#.##...",
-  "####..##..#.##..##.#....#...#",
-  "###..#.#.###...##.#####..####",
-  "###...###........#.######.#.#",
-  "........##.#.#.####.#...####.",
-  "#######...##...##..##.#.#.##.",
-  "#.....#.#..##..#..###...##...",
-  "#.###.#.#..###...#.######..##",
-  "#.###.#.#.##......#....#..##.",
-  "#.###.#....#.###..#.##.##.###",
-  "#.....#.####.##.#...##..#.#.#",
-  "#######..###.###..##.#####...",
-]
-GITHUB_QR_PX = 3
-GITHUB_QR_X = 37
-GITHUB_QR_Y = 16
-GITHUB_QR_BLOCKS = []
-for y in range(29):
-  row = GITHUB_QR_ROWS[y]
-  x = 0
-  while x < 29:
-    if row[x] == "#":
-      x2 = x
-      while x2 < 29 and row[x2] == "#":
-        x2 += 1
-      GITHUB_QR_BLOCKS.append(shape.rectangle(GITHUB_QR_X + x * GITHUB_QR_PX,
-                                               GITHUB_QR_Y + y * GITHUB_QR_PX,
-                                               (x2 - x) * GITHUB_QR_PX, GITHUB_QR_PX))
-      x = x2
-    else:
-      x += 1
 
 # ---------- the white cat of the GitHub logo (56 x 56 pixel map) ----------
 CAT = [
@@ -449,29 +344,6 @@ def draw_in(alpha):
   pen(WHITE, alpha, LI_BLUE)
   tf = mat3().translate(80, LOGO_CY).scale(LOGO_S / 32).translate(-16, -16)
   for b in IN32_BLOCKS:
-    b.transform = tf
-    screen.shape(b)
-
-def draw_qr_panel(off):
-  # a white slide with the QR code. off = how far the slide is from its resting place
-  # (0 = fully on screen, 160 = fully off screen to the right)
-  pen(WHITE)
-  screen.shape(shape.rectangle(off, -2, 164, 124))
-  pen(LI_BLUE)
-  screen.shape(shape.rectangle(off - 2, -2, 2, 124))     # thin blue edge while sliding
-  pen((0, 0, 0))
-  tf = mat3().translate(off, 0)
-  for b in QR_BLOCKS:
-    b.transform = tf
-    screen.shape(b)
-
-def draw_github_qr_panel(off):
-  # Same sliding white QR panel used by LinkedIn. off=160 hides it; off=0 shows it.
-  pen(WHITE)
-  screen.shape(shape.rectangle(off, -2, 164, 124))
-  pen(GH_BLACK)
-  tf = mat3().translate(off, 0)
-  for b in GITHUB_QR_BLOCKS:
     b.transform = tf
     screen.shape(b)
 
@@ -1427,14 +1299,9 @@ dbg = [-10.0, -10.0, -10.0, -10.0, -10.0]
 
 li_stage = 'ZOOM'    # ZOOM -> FADE -> INTRO -> EXIT, only used when open_i == 0
 li_t0 = badge.ticks
-li_page = 0          # 0 = name screen, 1 = QR code slide
-li_pt0 = badge.ticks - 10000
-
 github_render = build_github_animation()
 gh_t0 = badge.ticks
 gh_stage = 'ZOOM'
-gh_page = 0
-gh_page_t0 = badge.ticks
 GH_PROFILE_FRAME = 20.8  # hold on the completed SACHIN / DATA ANALYST title card
 
 while True:
@@ -1493,12 +1360,8 @@ while True:
       open_i = sel
       li_stage = 'ZOOM'
       li_t0 = now
-      li_page = 0
-      li_pt0 = now - 10000
       gh_stage = 'ZOOM'
       gh_t0 = now
-      gh_page = 0
-      gh_page_t0 = now - 10000
 
   elif scene == 3 and open_i == 0:
     # ================= LINKEDIN APP =================
@@ -1528,19 +1391,7 @@ while True:
       screen.shape(shape.rectangle(-5, -5, 170, 130))
       it = (now - li_t0) / TICKS_PER_SECOND
 
-      # the QR slide: off = 160 when hidden, 0 when fully shown
-      v = ease((now - li_pt0) / TICKS_PER_SECOND / 0.35)
-      if li_page == 1:
-        off = 160 * (1 - v)
-      else:
-        off = 160 * v
-      if off > 0:
-        draw_intro(it)
-        if SHOW_HINT and it > FINAL_T + 2.0:
-          text("A B QR CODE   C MENU", 80, 112, 1, (150, 165, 190),
-               ease((it - FINAL_T - 2.0) / 0.5), GH_LIGHT)
-      if off < 160:
-        draw_qr_panel(off)
+      draw_intro(it)
 
       if anyp:
         if it < FINAL_T:
@@ -1548,9 +1399,6 @@ while True:
         elif pc:
           li_stage = 'EXIT'
           li_t0 = now
-        elif v >= 1:
-          li_page = 1 - li_page                             # A or B: show / hide the QR code
-          li_pt0 = now
 
     elif li_stage == 'EXIT':
       # the screen shrinks back into the LinkedIn card
@@ -1588,17 +1436,10 @@ while True:
       else:
         # Hold the finished GitHub identity card, just like LinkedIn's name screen.
         github_render(GH_PROFILE_FRAME)
-        v = ease((now - gh_page_t0) / TICKS_PER_SECOND / 0.35)
-        off = 160 * (1 - v) if gh_page == 1 else 160 * v
-        if off < 160:
-          draw_github_qr_panel(off)
         if anyp and github_elapsed > 0.8:
           if pc:
             gh_stage = 'EXIT'
             gh_t0 = now
-          elif v >= 1:
-            gh_page = 1 - gh_page
-            gh_page_t0 = now
     elif gh_stage == 'EXIT':
       ft = (now - gh_t0) / TICKS_PER_SECOND
       u = ease(ft / 0.35)
